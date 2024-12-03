@@ -1,0 +1,11 @@
+opencv-contrib-python
+numpy
+opencv-python
+segment_anything
+supervision
+torch
+transformers
+addict
+yapf
+pycocotools
+timm
