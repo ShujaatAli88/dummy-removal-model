@@ -306,63 +306,28 @@ def apply_inverse_mask(image_path, mask_path, output_folder):
 
     print(f"Processed image saved to: {final_output_path}")
 
-# def process_folder(input_folder, resized_folder, masks_folder, output_folder):
-
-#     if not os.path.exists(input_folder):
-#         raise ValueError(f"Input folder does not exist: {input_folder}")
-
-#     print("Ensuring output directories are set up.")
-#     # Ensure that directories exist
-#     remover = ImprovedMannequinRemover()
-#     remover.ensure_directory_exists(resized_folder)
-#     remover.ensure_directory_exists(masks_folder)
-#     remover.ensure_directory_exists(output_folder)
-
-#     for filename in os.listdir(input_folder):
-#         if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-
-#             input_path = os.path.join(input_folder, filename)
-
-#             # Process image and create mask
-#             resized_image_path, mask_image_path = remover.process_image(input_path, resized_folder, masks_folder)
-
-#             # Apply inverse mask
-#             apply_inverse_mask(resized_image_path, mask_image_path, output_folder)
-
 def process_folder(input_folder, resized_folder, masks_folder, output_folder):
-    """
-    Process all images in the input folder to apply segmentation and save outputs.
 
-    Args:
-        input_folder (str): Path to the folder containing input images.
-        resized_folder (str): Path to save resized images.
-        masks_folder (str): Path to save generated masks.
-        output_folder (str): Path to save the final output images.
-    """
-    try:
-        # Ensure output directories exist
-        os.makedirs(resized_folder, exist_ok=True)
-        os.makedirs(masks_folder, exist_ok=True)
-        os.makedirs(output_folder, exist_ok=True)
+    if not os.path.exists(input_folder):
+        raise ValueError(f"Input folder does not exist: {input_folder}")
 
-        # Process each image in the folder
-        for filename in os.listdir(input_folder):
+    print("Ensuring output directories are set up.")
+    # Ensure that directories exist
+    remover = ImprovedMannequinRemover()
+    remover.ensure_directory_exists(resized_folder)
+    remover.ensure_directory_exists(masks_folder)
+    remover.ensure_directory_exists(output_folder)
+
+    for filename in os.listdir(input_folder):
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+
             input_path = os.path.join(input_folder, filename)
-            if not os.path.isfile(input_path):
-                continue  # Skip non-file entries
 
-            print(f"Processing file: {filename}")
-            try:
-                remover = ImprovedMannequinRemover()
-                resized_path, mask_path = remover.process_image(input_path, resized_folder, masks_folder)
-                apply_inverse_mask(resized_path, mask_path, output_folder)
-            except Exception as e:
-                print(f"Failed to process {filename}: {e}")
+            # Process image and create mask
+            resized_image_path, mask_image_path = remover.process_image(input_path, resized_folder, masks_folder)
 
-    except Exception as e:
-        print(f"Error processing folder: {e}")
-        raise
-
+            # Apply inverse mask
+            apply_inverse_mask(resized_image_path, mask_image_path, output_folder)
 
 def main():
     # Define folder paths (now relative to current directory)
